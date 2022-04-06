@@ -1,6 +1,10 @@
 from bs4 import BeautifulSoup
 import requests
+from flask import Flask, redirect, url_for, request
 from selenium import webdriver
+from flask import Flask
+
+app = Flask(__name__)
 
 BAIDUXUESHU_URL = 'https://xueshu.baidu.com/'
 
@@ -123,16 +127,23 @@ class Scihub(object):
     def get_base_url(self):
         print(self.base_url)
 
+@app.route("/doi",methods = ['POST'])
+def geturl_doi():
+    sh = Scihub()
+    url = sh.get_download_url(request.form['doi'],1)
+    return 'get it!',200,{"url" : url}
 
+@app.route("/keywords",methods = ['POST'])
+def geturl_keywords():
+    sh = Scihub()
+    url = sh.get_download_url(requests.form['keywords'],2)
+    return 'get it!',200,{"url" : url}
+
+"""
 def main():
     sh = Scihub()
-    #print(sh.get_download_url('10.1109/TKDE.2021.3079836',1))
-    #print(sh.fetch_doi('https://xueshu.baidu.com/usercenter/paper/show?paperid=115306207n1y0ee05g100tb0st387891&site=xueshu_se&hitarticle=1'))
     print(sh.get_download_url('Deep Convolutional - Optimized Kernel Extreme Learning Machine Based Classifier for Face Recognition',2))
 
 if __name__ == '__main__':
     main()
-
-"""
-https://xueshu.baidu.com/s?wd=Informed%20Machine%20Learning%20-%20A%20Taxonomy%20and%20Survey%20of%20Integrating%20Prior%20Knowledge%20into%20Learning%20Systems&tn=SE_baiduxueshu_c1gjeupa&ie=utf-8&sc_hit=1
 """
