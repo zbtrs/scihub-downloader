@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from selenium.webdriver.chrome.options import Options
 import requests
 from flask import Flask, redirect, url_for, request
 from selenium import webdriver
@@ -56,7 +57,10 @@ class Scihub(object):
 
     def doi_download_url(self,doi):
         scihuburl = self.base_url + doi
-        driver = webdriver.Chrome()
+        chrome_options = Options()
+        chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--disable-gpu')
+        driver = webdriver.Chrome(options=chrome_options)
         driver.get(scihuburl)
         driver.implicitly_wait(10)
         s = self._get_soup(driver.page_source)
@@ -74,7 +78,10 @@ class Scihub(object):
                 return dois[0]
             else:
                 return ""
-        driver = webdriver.Chrome()
+        chrome_options = Options()
+        chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--disable-gpu')
+        driver = webdriver.Chrome(options=chrome_options)
         driver.get('https://xueshu.baidu.com/s?wd=' + title + '&tn=SE_baiduxueshu_c1gjeupa&ie=utf-8&sc_hit=1')
         driver.implicitly_wait(10)
         s = self._get_soup(driver.page_source)
