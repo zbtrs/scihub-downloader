@@ -58,8 +58,9 @@ class Scihub(object):
     def doi_download_url(self,doi):
         scihuburl = self.base_url + doi
         chrome_options = Options()
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument('--disable-dev-shm-usage')
         chrome_options.add_argument('--headless')
-        chrome_options.add_argument('--disable-gpu')
         driver = webdriver.Chrome(options=chrome_options)
         driver.get(scihuburl)
         driver.implicitly_wait(10)
@@ -79,8 +80,9 @@ class Scihub(object):
             else:
                 return ""
         chrome_options = Options()
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument('--disable-dev-shm-usage')
         chrome_options.add_argument('--headless')
-        chrome_options.add_argument('--disable-gpu')
         driver = webdriver.Chrome(options=chrome_options)
         driver.get('https://xueshu.baidu.com/s?wd=' + title + '&tn=SE_baiduxueshu_c1gjeupa&ie=utf-8&sc_hit=1')
         driver.implicitly_wait(10)
