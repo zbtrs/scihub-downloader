@@ -66,8 +66,12 @@ class Scihub(object):
         driver.implicitly_wait(10)
         s = self._get_soup(driver.page_source)
         location = s.find(name='button').attrs['onclick']
-        download_url = self.base_url + location[16:-1]
-        return download_url
+        if location[15] == "/" and location[16] == "/":
+            download_url = "https:" + location[15:-1]
+            return download_url
+        else:
+            download_url = self.base_url + location[16:-1]
+            return download_url
 
     def search_doi(self,title):  #从百度学术上搜索一篇文献的DOI
         def fetch_doi(url):
@@ -140,13 +144,13 @@ class Scihub(object):
 def geturl_doi():
     sh = Scihub()
     url = sh.get_download_url(request.form['doi'],1)
-    return 'get it!',200,{"url" : url}
+    return url,200,{"url" : url}
 
 @app.route("/keywords",methods = ['POST'])
 def geturl_keywords():
     sh = Scihub()
     url = sh.get_download_url(requests.form['keywords'],2)
-    return 'get it!',200,{"url" : url}
+    return url,200,{"url" : url}
 
 """
 def main():
